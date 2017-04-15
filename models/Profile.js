@@ -1,4 +1,7 @@
+//which user
 var mongoose = require('mongoose')
+
+console.log(mongoose.Types.ObjectId.isValid('123'));
 
 var ProfileSchema = new mongoose.Schema({
 	username: {type:String, default:''},

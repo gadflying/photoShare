@@ -7,5 +7,22 @@
   <body>
     <h1>{{ title }}</h1>
     <p>Welcome to {{ title }}</p>
+    <form action='/api/profile' method='post'>
+    <fieldset >
+      <input type="text" name = "username" placeholder="username"> <label>User Name</label><br>
+      <input type='text', name="password" placeholder='password'><label>password</label><br>
+      <input type='submit' value='Creat'>
+    </fieldset>
+  </form>
+
+<h4>Creat comments</h4>
+  <form action='/api/comment' method='post'>
+  <fieldset >
+<!-- //the name in name is very important r to reference form data after a form is submitted. 和model 里面的向对应  -->
+    <input type="text" name = "post"><label>Post</label><br>
+    <input type='text', name="text"><label>content</label><br>
+    <input type='submit' value='Creat'>
+  </fieldset>
+</form>
   </body>
 </html>
