@@ -7,8 +7,24 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var api = require('./routes/api');
+var mongoose = require('mongoose');
+require('dotenv').config()
+
+// var dbUrl='mongodb://localhost/snapshot'
+
+mongoose.connect(process.env.DB_URL, function(err, res){
+  if (err){
+    console.log('DB CONNECTION FAIL')
+
+  }
+  else {
+    console.log('DB CONNECTION SUCCESS')
+  }
+})
+
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
