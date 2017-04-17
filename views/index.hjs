@@ -39,6 +39,9 @@ the name in name is very important r to reference form data after a form is subm
 
 
 <div id="root"></div>
+<!-- the key to use google map -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyAYA1eCg1ToFOxVfVxqZHzqNnNJFgnLNYw"></script>
+
 <script type="text/javascript" src="/build/bundle.js"></script>
 
   </body>

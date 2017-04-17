@@ -5,17 +5,17 @@ import { Posts, MapNavigation} from '../containers'
 import {Map,Header} from '../view'
 //mpa here is not good need container to passdown the props
 // import {Map} from '../view' will remove away will replace by container
-
+//must in container not out side of contianer
 class Home extends Component {
 	render(){
 		return (
-			<Header/>
 
 			<div className="container">
+			  <Header />
 				Home Layout
 				<div className="row">
 					<div className="col-md-3">
-				    		{/* map */}
+
 								<MapNavigation/>
 						</div>
 						<div className="col-md-6">
