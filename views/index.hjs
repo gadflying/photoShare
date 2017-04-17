@@ -25,6 +25,14 @@ the name in name is very important r to reference form data after a form is subm
     <input type='submit' value='Creat'>
   </fieldset>
 </form>-->
+<!-- <h4>Creat comments</h4>
+  <form action='/api/post' method='post'>
+  <fieldset >
+    <input type="text" name = "image"><label>image</label><br>
+    <input type='text', name="caption"><label>caption</label><br>
+    <input type='submit' value='Creat'>
+  </fieldset>
+</form> -->
 
 <div id="root"></div>
 <script type="text/javascript" src="/build/bundle.js"></script>
