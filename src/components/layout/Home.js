@@ -1,32 +1,30 @@
 import React, { Component } from 'react'
-import { Posts } from '../containers'
+import { Posts, MapNavigation} from '../containers'
+
 //this is real component instead of containers.
-import {Map} from '../view'
+import {Map,Header} from '../view'
+//mpa here is not good need container to passdown the props
+// import {Map} from '../view' will remove away will replace by container
+
 class Home extends Component {
 	render(){
 		return (
+			<Header/>
+
 			<div className="container">
 				Home Layout
 				<div className="row">
-
-		<div className="col-md-3">
-			MAP
-    <Map/>
-
-		</div>
-		<div className="col-md-6">
-			<Posts />
-
-
-		</div>
-
-		<div className="col-md-3">
-			ACCOUNT
-
-		</div>
-
-
-	</div>
+					<div className="col-md-3">
+				    		{/* map */}
+								<MapNavigation/>
+						</div>
+						<div className="col-md-6">
+							<Posts />
+						</div>
+						<div className="col-md-3">
+							ACCOUNT
+						</div>
+					</div>
 			</div>
 		)
 	}
