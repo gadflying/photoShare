@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Posts } from '../containers'
 //this is real component instead of containers.
+import {Map} from '../view'
 class Home extends Component {
 	render(){
 		return (
@@ -10,7 +11,7 @@ class Home extends Component {
 
 		<div className="col-md-3">
 			MAP
-
+    <Map/>
 
 		</div>
 		<div className="col-md-6">
