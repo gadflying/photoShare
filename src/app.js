@@ -2,15 +2,15 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import{Posts} from './components/containers'
-// import { Home } from './components/layout'
+import {Home } from './components/layout'
 import store from './stores'
 import { Provider } from 'react-redux'
-
+//add comonent from layout
 
 const app = (
 	<Provider store={ store.configureStore() }>
 		<div>
-			<Posts/>
+			<Home/>
 		</div>
 	</Provider>
 )

@@ -8,15 +8,24 @@ var ProfileSchema = new mongoose.Schema({
 	password: {type:String, default:''},
 	timestamp: {type:Date, default: Date.now}
 })
-
-// ProfileSchema.methods.summary = function(){
-// 	var summary = {
-// 		username: this.username,
-// 		timestamp: this.timestamp,
-// 		id: this._id.toString()
-// 	}
-//
-// 	return summary
+// this way password will not return
+// var summary = {
+// 	profile: this.profile,
+// 	image: this.image,
+// 	caption: this.caption,
+// 	timestamp: this.timestamp,
+// 	id: this._id.toString()//here change _id to id
 // }
+//you can determin what to return back from backend 
+
+ProfileSchema.methods.summary = function(){
+	var summary = {
+		username: this.username,
+		timestamp: this.timestamp,
+		id: this._id.toString()
+	}
+
+	return summary
+}
 
 module.exports = mongoose.model('ProfileSchema', ProfileSchema)

@@ -4,22 +4,24 @@ var Promise = require('bluebird')
 module.exports = {
 	get: function(params, isRaw){
 		return new Promise(function(resolve, reject){
-			Post.find(params, function(err, post){
+			Post.find(params, function(err, posts){
 				if (err){
 					reject(err)
 					return
 				}
+//if true it is raw means it is mongoose obj
+//else we iterate each profile , this obj contains raw and not raw in model
+//http://localhost:3000/api/post
+				if (isRaw)
+					resolve(posts)
+				else {
+					var list = []
+					posts.forEach(function(post, i){
+						list.push(post.summary())
+					})
 
-				// if (isRaw == true)
-				// 	resolve(profiles)
-				// else {
-				// 	var list = []
-				// 	profiles.forEach(function(profile, i){
-				// 		list.push(profile.summary())
-				// 	})
-
-					resolve(post)
-				// }
+					resolve(list)
+				}
 			})
 		})
 	},
@@ -32,10 +34,10 @@ module.exports = {
 					return
 				}
        resolve(post)
-				// if (isRaw == true)
-				// 	resolve(profile)
-				// else
-				// 	resolve(profile.summary())
+				if (isRaw)
+					resolve(post)
+				else
+					resolve(post.summary())
 			})
 		})
 	},
@@ -48,10 +50,10 @@ module.exports = {
 					return
 				}
         resolve(post)
-				// if (isRaw == true)
-				// 	resolve(profile)
-				// else
-				// 	resolve(profile.summary())
+				if (isRaw == true)
+					resolve(post)
+				else
+					resolve(post.summary())
 			})
 		})
 	}

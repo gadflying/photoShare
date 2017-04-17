@@ -10,20 +10,20 @@ module.exports = {
 					return
 				}
 
-				// if (isRaw == true)
-				// 	resolve(profiles)
-				// else {
-				// 	var list = []
-				// 	profiles.forEach(function(profile, i){
-				// 		list.push(profile.summary())
-				// 	})
-
+				if (isRaw)
 					resolve(profiles)
-				// }
+				else {
+					var list = []
+					profiles.forEach(function(profile, i){
+						list.push(profile.summary())
+					})
+
+					resolve(list)//not return profiles otherwise http://localhost:3000/api/profile
+				}
 			})
 		})
 	},
-
+//http://localhost:3000/api/profile/58f2a16dfbaff62334fe6d29
 	getById: function(id, isRaw){
 		return new Promise(function(resolve, reject){
 			Profile.findById(id, function(err, profile){
@@ -32,10 +32,10 @@ module.exports = {
 					return
 				}
        resolve(profile)
-				// if (isRaw == true)
-				// 	resolve(profile)
-				// else
-				// 	resolve(profile.summary())
+				if (isRaw == true)
+					resolve(profile)
+				else
+					resolve(profile.summary())
 			})
 		})
 	},
@@ -48,10 +48,10 @@ module.exports = {
 					return
 				}
         resolve(profile)
-				// if (isRaw == true)
-				// 	resolve(profile)
-				// else
-				// 	resolve(profile.summary())
+				if (isRaw == true)
+					resolve(profile)
+				else
+					resolve(profile.summary())
 			})
 		})
 	}

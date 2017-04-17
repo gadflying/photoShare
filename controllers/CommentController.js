@@ -10,16 +10,16 @@ module.exports = {
 					return
 				}
 
-				// if (isRaw == true)
-				// 	resolve(comments)
-				// else {
-				// 	var list = []
-				// 	comments.forEach(function(comment, i){
-				// 		list.push(comment.summary())
-				// 	})
-
+				if (isRaw)
 					resolve(comments)
-				// }
+				else {
+					var list = []
+					comments.forEach(function(comment, i){
+						list.push(comment.summary())
+					})
+
+					resolve(list)
+				 }
 			})
 		})
 	},
@@ -32,10 +32,10 @@ module.exports = {
 					return
 				}
 	      resolve(comment)
-				// if (isRaw == true)
-				// 	resolve(comment)
-				// else
-				// 	resolve(comment.summary())
+				if (isRaw)
+					resolve(comment)
+				else
+					resolve(comment.summary())
 			})
 		})
 	},
@@ -48,10 +48,10 @@ module.exports = {
 					return
 				}
 					resolve(comment)
-				// if (isRaw == true)
-				// 	resolve(comment)
-				// else
-				// 	resolve(comment.summary())
+				if (isRaw)
+					resolve(comment)
+				else
+					resolve(comment.summary())
 			})
 		})
 	}

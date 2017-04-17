@@ -16,10 +16,24 @@ class Posts extends Component{
     // }) when you get post you need to make
     this.props.fetchPosts(null)
 	}
-
+  //here this props posts the name of posts is determined by
+  // const stateToProps = (state) => {
+  // 	return {
+  // 		posts: state.post
+  // 	}
+  // }
   render(){
+    // const list = _id since data from response is
+    const list = this.props.posts.list.map((post, i) => {
+      return (
+        <li key={post.id}>{post.caption}</li>
+      )
+    })
     return(
-      <div> here is post entry point
+      <div> post entry point !!
+        <ol>
+          {list}
+        </ol>
       </div>
     )
   }
