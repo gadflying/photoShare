@@ -2,7 +2,7 @@ import React,{Component}from 'react'
 import { APIManager } from '../../utils'
 import {connect} from 'react-redux'
 import actions from '../../actions'
-
+import {CreatePost} from '../view'
 class Posts extends Component{
 // APIManager.get('/api/comment') 这里会调用存在api comment 中的数据
 //here we get then the data //here we send to reducer.
@@ -30,7 +30,8 @@ class Posts extends Component{
       )
     })
     return(
-      <div> post entry point !!
+      <div>
+      <CreatePost/>
         <ol>
           {list}
         </ol>
