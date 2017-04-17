@@ -1,6 +1,12 @@
 import constants from '../constants'
-
+//currentlocation determin what post to say?
+//we can set default city
+//data is in reducer so commentout the data in containers and  and change name to the one in reducer
 var initialState = {
+	currentLocation:{
+		lat:37.63549,
+		lng:-122.4157069
+	},
 	 list: []
 }
 //so the action posts gonna pick up in container so go back to container posts
