@@ -55,7 +55,38 @@ export default{
 
     })
 
-  }
+  },
+  //uploadFile where to send what to send and params
+  uploadFile: (url, file, params) => {
+  return new Promise((resolve, reject) => {
+
+        let uploadRequest = superagent.post(url)//past url
+        uploadRequest.attach('file', file)//pass file
+//in CreatPost
+// const params = {
+//   'api_key': '967535936313619',
+//   'timestamp': timestamp,
+//   'upload_preset': uploadPreset,
+//   'signature': signature
+// }
+
+        if (params != null){//only when u have params// go over all keys, and
+          Object.keys(params).forEach((key) => {//get each key and get value
+            uploadRequest.field(key, params[key])
+          })
+        }
+
+        uploadRequest.end((err, resp) => {
+          if (err){
+            reject(err)
+            return
+          }
+          const uploaded = resp.body//after end we get response then resolve it
+          console.log('UPLOAD COMPLETE:callback from API '+JSON.stringify(uploaded))
+          resolve(uploaded)
+        })
+  })
+}
 }
 
 // var p = new Promise(function(resolve, reject) {
