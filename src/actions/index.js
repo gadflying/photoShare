@@ -10,6 +10,23 @@ export default{
       location:location
     }
   },
+  //this is post not get
+  createPost:(params)=>{
+    return (dispatch)=>{
+      APIManager
+      .post('/api/post',params)
+      .then(response=>{
+        console.log('response'+JSON.stringify(response))
+        // dispatch({
+        //   type:constants.POSTS_RECEIVED,
+        //   posts:response.results
+        // })
+      })
+      .catch((err)=>{
+        console.log('ERROR: '+err)
+      })
+    }
+  },
   //where post actually received constants.POSTS_RECEIVED: this
   //this dispatch so that reducers know that , first container ---> actions--->reducers
 

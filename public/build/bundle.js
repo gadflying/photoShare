@@ -7348,6 +7348,20 @@ exports.default = {
       location: location
     };
   },
+  //this is post not get
+  createPost: function createPost(params) {
+    return function (dispatch) {
+      _utils.APIManager.post('/api/post', params).then(function (response) {
+        console.log('response' + JSON.stringify(response));
+        // dispatch({
+        //   type:constants.POSTS_RECEIVED,
+        //   posts:response.results
+        // })
+      }).catch(function (err) {
+        console.log('ERROR: ' + err);
+      });
+    };
+  },
   //where post actually received constants.POSTS_RECEIVED: this
   //this dispatch so that reducers know that , first container ---> actions--->reducers
 
@@ -12091,6 +12105,7 @@ var Posts = function (_Component) {
     key: 'submitPost',
     value: function submitPost(post) {
       //postReducer  又名 post
+      // {"image":"","caption":"gogo","geo":[37.63549,-122.4157069],"tempt":"tempt123"}
       var currentLocation = this.props.posts.currentLocation;
       post['geo'] = [currentLocation.lat, currentLocation.lng];
       post['tempt'] = 'tempt123';
@@ -12098,6 +12113,7 @@ var Posts = function (_Component) {
       console.log('SUBMITPOST: ' + JSON.stringify(post));
       // this.props.createPost(post)
       //the post include image and caption
+      this.props.createPost(post);
     }
   }, {
     key: 'render',
@@ -12142,6 +12158,9 @@ var stateToProps = function stateToProps(state) {
 
 var dispatchToProps = function dispatchToProps(dispatch) {
   return {
+    createPost: function createPost(params) {
+      return dispatch(_actions2.default.createPost(params));
+    },
     fetchPosts: function fetchPosts(params) {
       return dispatch(_actions2.default.fetchPosts(params));
     }
@@ -12603,6 +12622,19 @@ exports.default = {
     return new _bluebird2.default(function (resolve, reject) {
 
       _superagent2.default.get(url).query(params).set('Accept', 'application/json').end(function (err, response) {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(response.body);
+      });
+    });
+  },
+  post: function post(url, params) {
+    return new _bluebird2.default(function (resolve, reject) {
+
+      _superagent2.default.post(url).send(params).set('Accept', 'application/json').end(function (err, response) {
         if (err) {
           reject(err);
           return;

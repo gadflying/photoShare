@@ -1,7 +1,7 @@
 //which user
 var mongoose = require('mongoose')
 
-console.log(mongoose.Types.ObjectId.isValid('123'));
+//console.log(mongoose.Types.ObjectId.isValid('123'));
 
 var ProfileSchema = new mongoose.Schema({
 	username: {type:String, default:''},
@@ -16,7 +16,7 @@ var ProfileSchema = new mongoose.Schema({
 // 	timestamp: this.timestamp,
 // 	id: this._id.toString()//here change _id to id
 // }
-//you can determin what to return back from backend 
+//you can determin what to return back from backend
 
 ProfileSchema.methods.summary = function(){
 	var summary = {

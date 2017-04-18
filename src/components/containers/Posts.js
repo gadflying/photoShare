@@ -41,6 +41,7 @@ class Posts extends Component{
 		 console.log('SUBMITPOST: '+JSON.stringify(post))
 		// this.props.createPost(post)
     //the post include image and caption
+    this.props.createPost(post);
 	}
 
   render(){
@@ -79,7 +80,8 @@ const stateToProps=(state)=>{
 
 const dispatchToProps = (dispatch) => {
 	return {
-		fetchPosts: (params) => dispatch(actions.fetchPosts(params))
+		createPost: (params) => dispatch(actions.createPost(params)),
+    fetchPosts: (params) => dispatch(actions.fetchPosts(params))
 
 	}
 }

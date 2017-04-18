@@ -8,16 +8,21 @@ var PostSchema = new mongoose.Schema({
   profile: {type:mongoose.Schema.Types.Mixed, default:{}},
 	image: {type:String, default:''},
 	caption: {type:String, default:''},
+	geo: {
+		type: [Number],
+		index: '2d'
+  },
 	timestamp: {type:Date, default: Date.now}
 })
 
 
-//for profile not want password to send back 
+//for profile not want password to send back
 PostSchema.methods.summary = function(){
 	var summary = {
 		profile: this.profile,
 		image: this.image,
 		caption: this.caption,
+		geo:this.geo,
 		timestamp: this.timestamp,
 		id: this._id.toString()//here change _id to id
 	}
