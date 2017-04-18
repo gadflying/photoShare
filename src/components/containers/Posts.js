@@ -3,6 +3,7 @@ import { APIManager } from '../../utils'
 import {connect} from 'react-redux'
 import actions from '../../actions'
 import {CreatePost} from '../view'
+
 class Posts extends Component{
 // APIManager.get('/api/comment') 这里会调用存在api comment 中的数据
 //here we get then the data //here we send to reducer.
@@ -21,25 +22,54 @@ class Posts extends Component{
   // 	return {
   // 		posts: state.post
   // 	}
-  // }
+  // }这里为什么和reducer 联系在一起因为
+  componentDidUpdate(){
+    console.log('componentDidUpdate: ')
+    // if (this.props.posts.list == null)
+    //   this.props.fetchPosts(null)
+  }
+  submitPost(post){
+    //postReducer  又名 post
+    // {"image":"","caption":"gogo","geo":[37.63549,-122.4157069],"tempt":"tempt123"}
+		const currentLocation = this.props.posts.currentLocation
+		post['geo'] = [
+			currentLocation.lat,
+			currentLocation.lng,
+		]
+    post['tempt'] = 'tempt123'
+
+		 console.log('SUBMITPOST: '+JSON.stringify(post))
+		// this.props.createPost(post)
+    //the post include image and caption
+	}
+
   render(){
     // const list = _id since data from response is
-    const list = this.props.posts.list.map((post, i) => {
-      return (
-        <li key={post.id}>{post.caption}</li>
-      )
-    })
+    // const list = this.props.posts.list.map((post, i) => {
+    //   return (
+    //     <li key={post.id}>{post.caption}</li>
+    //   )
+    // })
+    const list = this.props.posts.list // can be null
     return(
       <div>
-      <CreatePost/>
+      <CreatePost onCreate={this.submitPost.bind(this)}/>
         <ol>
-          {list}
+          {/*list*/}
+          {
+              (list == null) ? null :
+            list.map((post, i) => {
+              return (
+                <li key={post.id}>{post.caption}</li>
+              )
+            })
+         }
         </ol>
       </div>
     )
   }
 }
-
+// container 总有一句话链接state到Props reducer 中state 降格为props 右边是reduer 又名
 const stateToProps=(state)=>{
   return {
     posts:state.post

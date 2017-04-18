@@ -7342,6 +7342,12 @@ var _utils = __webpack_require__(68);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
+  updateCurrentLocation: function updateCurrentLocation(location) {
+    return {
+      type: _constants2.default.CURRENT_LOCATION_CHANGED,
+      location: location
+    };
+  },
   //where post actually received constants.POSTS_RECEIVED: this
   //this dispatch so that reducers know that , first container ---> actions--->reducers
 
@@ -7384,11 +7390,11 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 exports.default = {
-
-	POSTS_RECEIVED: 'POSTS_RECEIVED'
+  CURRENT_LOCATION_CHANGED: 'CURRENT_LOCATION_CHANGED',
+  POSTS_RECEIVED: 'POSTS_RECEIVED'
 
 };
 
@@ -11958,6 +11964,19 @@ var MapNavigation = function (_Component) {
   }
 
   _createClass(MapNavigation, [{
+    key: 'setNewLocation',
+
+
+    //when ever map move call mapMoved function
+    //creat action change location in reducer
+    //one component and other component change since reducer change
+    value: function setNewLocation(location) {
+      //console.log('setNewLocation')
+      console.log('setNewLocation: ' + JSON.stringify(location));
+      this.props.updateCurrentLocation(location);
+      //after we setup updateCurrentLocation we need to call dispatch when to dispatch
+    }
+  }, {
     key: 'render',
     value: function render() {
       // const center={
@@ -11968,7 +11987,10 @@ var MapNavigation = function (_Component) {
         'div',
         null,
         'MapNavigation Component;',
-        _react2.default.createElement(_view.Map, { center: this.props.posts.currentLocation, zoom: 14 })
+        _react2.default.createElement(_view.Map, {
+          center: this.props.posts.currentLocation,
+          zoom: 14,
+          mapMoved: this.setNewLocation.bind(this) })
       );
     }
   }]);
@@ -11983,7 +12005,11 @@ var stateToProps = function stateToProps(state) {
   };
 };
 var dispatchToProps = function dispatchToProps(dispatch) {
-  return {};
+  return {
+    updateCurrentLocation: function updateCurrentLocation(location) {
+      return dispatch(_actions2.default.updateCurrentLocation(location));
+    }
+  };
 };
 // export default MapNavigation
 exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(MapNavigation);
@@ -12052,27 +12078,51 @@ var Posts = function (_Component) {
     // 	return {
     // 		posts: state.post
     // 	}
-    // }
+    // }这里为什么和reducer 联系在一起因为
 
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      console.log('componentDidUpdate: ');
+      // if (this.props.posts.list == null)
+      //   this.props.fetchPosts(null)
+    }
+  }, {
+    key: 'submitPost',
+    value: function submitPost(post) {
+      //postReducer  又名 post
+      var currentLocation = this.props.posts.currentLocation;
+      post['geo'] = [currentLocation.lat, currentLocation.lng];
+      post['tempt'] = 'tempt123';
+
+      console.log('SUBMITPOST: ' + JSON.stringify(post));
+      // this.props.createPost(post)
+      //the post include image and caption
+    }
   }, {
     key: 'render',
     value: function render() {
       // const list = _id since data from response is
-      var list = this.props.posts.list.map(function (post, i) {
-        return _react2.default.createElement(
-          'li',
-          { key: post.id },
-          post.caption
-        );
-      });
+      // const list = this.props.posts.list.map((post, i) => {
+      //   return (
+      //     <li key={post.id}>{post.caption}</li>
+      //   )
+      // })
+      var list = this.props.posts.list; // can be null
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_view.CreatePost, null),
+        _react2.default.createElement(_view.CreatePost, { onCreate: this.submitPost.bind(this) }),
         _react2.default.createElement(
           'ol',
           null,
-          list
+          list == null ? null : list.map(function (post, i) {
+            return _react2.default.createElement(
+              'li',
+              { key: post.id },
+              post.caption
+            );
+          })
         )
       );
     }
@@ -12080,6 +12130,8 @@ var Posts = function (_Component) {
 
   return Posts;
 }(_react.Component);
+// container 总有一句话链接state到Props reducer 中state 降格为props 右边是reduer 又名
+
 
 var stateToProps = function stateToProps(state) {
   return {
@@ -12221,10 +12273,40 @@ var CreatePost = function (_Component) {
 	function CreatePost() {
 		_classCallCheck(this, CreatePost);
 
-		return _possibleConstructorReturn(this, (CreatePost.__proto__ || Object.getPrototypeOf(CreatePost)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (CreatePost.__proto__ || Object.getPrototypeOf(CreatePost)).call(this));
+
+		_this.state = {
+			post: {
+				image: '',
+				caption: ''
+			}
+		};
+		return _this;
 	}
 
 	_createClass(CreatePost, [{
+		key: 'updatePost',
+		value: function updatePost(event) {
+			event.preventDefault();
+			var updated = Object.assign({}, this.state.post); //get inital value
+			console.log('event.target.value', event.target.value);
+			console.log('updated', updated); //here target id is on input caption
+			updated[event.target.id] = event.target.value; //here is input value updated is empty or
+			this.setState({
+				post: updated
+			});
+		}
+	}, {
+		key: 'submitPost1',
+		value: function submitPost1(event) {
+			event.preventDefault();
+			console.log('subimtPost: ' + JSON.stringify(this.state.post));
+			var updated = Object.assign({}, this.state.post);
+			this.props.onCreate(updated); //this onCreat not exist in so we need to pass this onCreat function
+			//from containers to view
+			//updated == post give it to posts container as post 
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
@@ -12239,6 +12321,12 @@ var CreatePost = function (_Component) {
 						null,
 						'Upload Image'
 					)
+				),
+				_react2.default.createElement('input', { id: 'caption', onChange: this.updatePost.bind(this), type: 'text', placeholder: 'Caption' }),
+				_react2.default.createElement(
+					'button',
+					{ onClick: this.submitPost1.bind(this) },
+					'Submit'
 				)
 			);
 		}
@@ -12332,21 +12420,38 @@ var Map = function (_Component) {
   function Map() {
     _classCallCheck(this, Map);
 
-    return _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this));
+
+    _this.state = {
+      map: null
+    };
+    return _this;
   }
+  // render(){
+  //   return (
+  //     <div>
+  //       //  Map Component;
+  //     </div>
+  //   )
+  // }
+  //you care about when the drap stop; when map stop navigation we get this call back in the console
 
   _createClass(Map, [{
+    key: 'mapDragged',
+    value: function mapDragged() {
+      //here you location map object then you can call getCenter in library
+      //when there is detail move in component move up to container , view's in containers left;
+      //view tell container hi u probably what this
+      var latLng = this.state.map.getCenter().toJSON();
+
+      console.log('mapDragged: ' + JSON.stringify(latLng));
+      this.props.mapMoved(latLng);
+    }
+  }, {
     key: 'render',
-
-    // render(){
-    //   return (
-    //     <div>
-    //       //  Map Component;
-    //     </div>
-    //   )
-    // }
-
     value: function render() {
+      var _this2 = this;
+
       var mapContainer = _react2.default.createElement('div', { style: { minHeight: 800, height: '100%', width: '100%' } });
       // const center={
       //   // lat:0,
@@ -12356,12 +12461,20 @@ var Map = function (_Component) {
       // }
       //center is come from conner property should passdown from container
       //map was wrapped in MapNavigation so
+      //google map itself store the property on the state of componnets if you make change change state
+      //this local one view maintain the state,
+
       return _react2.default.createElement(_reactGoogleMaps.GoogleMapLoader, {
         containerElement: mapContainer,
         googleMapElement: _react2.default.createElement(_reactGoogleMaps.GoogleMap, {
+          ref: function ref(map) {
+            if (_this2.state.map != null) return;
 
+            _this2.setState({ map: map });
+          },
           defaultZoom: this.props.zoom,
           defaultCenter: this.props.center,
+          onDragend: this.mapDragged.bind(this),
           options: { streetViewControl: false, mapTypeControl: false } }) });
     }
   }]);
@@ -12416,7 +12529,10 @@ var initialState = {
 		lat: 37.63549,
 		lng: -122.4157069
 	},
-	list: []
+	//  list: []
+	tempt: 'undefined',
+	list: null
+
 };
 //so the action posts gonna pick up in container so go back to container posts
 
@@ -12424,12 +12540,20 @@ exports.default = function () {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	var action = arguments[1];
 
+
 	var updated = Object.assign({}, state);
 
 	switch (action.type) {
 		case _constants2.default.POSTS_RECEIVED:
-			console.log('POSTS_RECEIVED: ' + JSON.stringify(action.posts));
+			//console.log('POSTS_RECEIVED: '+JSON.stringify(action.posts))
 			updated['list'] = action.posts;
+			return updated;
+		case _constants2.default.CURRENT_LOCATION_CHANGED:
+			//RECEIVER
+			//console.log('LOCATION_RECEIVED: '+JSON.stringify(action.location))
+			//when location change post need to delete
+			updated['currentLocation'] = action.location;
+			updated['list'] = null;
 			return updated;
 
 		default:

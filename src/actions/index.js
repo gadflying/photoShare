@@ -4,6 +4,12 @@ import constants from '../constants'
 import{APIManager} from '../utils'
 
 export default{
+  updateCurrentLocation:(location)=>{
+    return {
+      type:constants.CURRENT_LOCATION_CHANGED,
+      location:location
+    }
+  },
   //where post actually received constants.POSTS_RECEIVED: this
   //this dispatch so that reducers know that , first container ---> actions--->reducers
 

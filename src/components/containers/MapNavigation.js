@@ -9,6 +9,16 @@ import {connect }from 'react-redux'
 import actions from '../../actions'
 
 class MapNavigation extends Component{
+
+//when ever map move call mapMoved function
+//creat action change location in reducer
+//one component and other component change since reducer change
+  setNewLocation(location){
+    //console.log('setNewLocation')
+		console.log('setNewLocation: '+JSON.stringify(location))
+  this.props.updateCurrentLocation(location)
+  //after we setup updateCurrentLocation we need to call dispatch when to dispatch
+}
   render(){
     // const center={
     //   lat:37.63549,
@@ -19,7 +29,10 @@ class MapNavigation extends Component{
          MapNavigation Component;
          {/*<Map center={center} zoom={14}/>*/}
          {/* right value in map */}
-         <Map center={this.props.posts.currentLocation} zoom={14}/>
+         <Map
+            center={this.props.posts.currentLocation}
+            zoom={14}
+            mapMoved={this.setNewLocation.bind(this)}/>
 
       </div>
     )
@@ -33,7 +46,7 @@ const stateToProps = (state) =>{
 }
 const dispatchToProps = (dispatch) =>{
   return {
-
+    updateCurrentLocation:(location)=>dispatch(actions.updateCurrentLocation(location))
   }
 }
 // export default MapNavigation
