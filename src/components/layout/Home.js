@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Posts, MapNavigation} from '../containers'
+import { Posts, MapNavigation,Account} from '../containers'
 
 //this is real component instead of containers.
 import {Map,Header} from '../view'
@@ -23,6 +23,7 @@ class Home extends Component {
 						</div>
 						<div className="col-md-3">
 							ACCOUNT
+							<Account />
 						</div>
 					</div>
 			</div>

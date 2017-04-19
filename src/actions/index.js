@@ -4,6 +4,24 @@ import constants from '../constants'
 import{APIManager} from '../utils'
 
 export default{
+//user: response.user here dispatch is in action so it is in user,  actions.user post 并且发送 action 改变reducer
+  signup: (params) => {
+  return (dispatch) => {
+    APIManager
+    .post('/account/register', params)
+    .then(response => {
+      console.log('account/register__action',JSON.stringify(response))
+      dispatch({
+        type: constants.CURRENT_USER_RECEIVED,
+        user: response.user
+      })
+    })
+    .catch((err) => {
+      console.log('ERROR: '+err)
+    })
+  }
+},
+
   updateCurrentLocation:(location)=>{
     return {
       type:constants.CURRENT_LOCATION_CHANGED,

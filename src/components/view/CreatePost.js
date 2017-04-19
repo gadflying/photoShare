@@ -27,7 +27,18 @@ updatePost(event){
 }
 
 submitPost1(event){
+	//submit to sever
 	event.preventDefault()
+	if(this.state.post.image.length==0){
+		//if did not post any image and click submit post
+		alert('please post image')
+		return
+	}
+	if (this.state.post.caption.length == 0){
+			alert('Please add a caption.')
+			return
+		}
+
 	console.log('subimtPost: '+JSON.stringify(this.state.post))
 	let updated = Object.assign({}, this.state.post)
 	this.props.onCreate(updated)//this onCreat not exist in so we need to pass this onCreat function
@@ -63,13 +74,15 @@ imageSelected(files){
 		.then((uploaded) => {
 			console.log('Upload Complete: call back from component '+JSON.stringify(uploaded))
 			//uploaded return from cloudinary
-			// let updated = Object.assign({}, this.state.post)//after load we
-			// updated['image'] = uploaded['secure_url']
-			// this.setState({
-			// 	post: updated
-			// })
+			let updated = Object.assign({}, this.state.post)//after load we get secureurl for each image
+			updated['image'] = uploaded['secure_url']//image: {type:String, default:''}, this from schema
+			this.setState({
+				post: updated
+			})//拿到状态中的post 进行改变然后更新 状态的post
 
-			// Cloudinary returns this: {"public_id":"w2wah5zepcihbdvpky3v","version":1484004334,"signature":"cee9e534a282591c60fb83f8e7bdb028108ab6b3","width":360,"height":360,"format":"png","resource_type":"image","created_at":"2017-01-09T23:25:34Z","tags":[],"bytes":21776,"type":"upload","etag":"d5d83eeac7bc222569a7cef022426c9f","url":"http://res.cloudinary.com/dcxaoww0c/image/upload/v1484004334/w2wah5zepcihbdvpky3v.png","secure_url":"https://res.cloudinary.com/dcxaoww0c/image/upload/v1484004334/w2wah5zepcihbdvpky3v.png","original_filename":"apple"}
+			// Cloudinary returns this: {"public_id":"me1zmklzjgmynxbyo9gf","version":1492545528,
+			//"signature":"4c0e62697d554f768c77da31f7b74dbd28067745",
+			//"width":2398,"height":382,"format":"png","resource_type":"image","created_at":"2017-04-18T19:58:48Z","tags":[],"bytes":127960,"type":"upload","etag":"db6325baf1b5b5c5e6d3deabb5b5e8cc","url":"http://res.cloudinary.com/duq8c0cnt/image/upload/v1492545528/me1zmklzjgmynxbyo9gf.png","secure_url":"https://res.cloudinary.com/duq8c0cnt/image/upload/v1492545528/me1zmklzjgmynxbyo9gf.png","original_filename":"Screen Shot 2017-02-27 at 1.50.48 PM"}
 
 		})
 		.catch((err) => {
