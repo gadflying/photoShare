@@ -12035,7 +12035,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //4. not want sign up to show when current user so decide whether to show register componnet or not
 //  <Register onRegister={this.register.bind(this)}/>
 //{(this.props.account.user==null)?null:<Register onRegister ={this.register.bind(this)}/>}
-
+//when wirte the password and user we get user name instead of empty
 var Account = function (_Component) {
   _inherits(Account, _Component);
 
@@ -12063,7 +12063,11 @@ var Account = function (_Component) {
         'div',
         null,
         'Account Container here',
-        currentUser != null ? null : _react2.default.createElement(_view.Register, { onRegister: this.register.bind(this) })
+        currentUser != null ? _react2.default.createElement(
+          'h2',
+          null,
+          currentUser.username
+        ) : _react2.default.createElement(_view.Register, { onRegister: this.register.bind(this) })
       );
     }
   }]);
